@@ -1,0 +1,17 @@
+$reel-symbol-height: 121px;
+
+.reel {
+  position: relative;
+  height: $reel-symbol-height * 2;
+  overflow-y: hidden;
+
+  .reel-symbol {
+    height: $reel-symbol-height;
+
+    .reel-symbol img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
