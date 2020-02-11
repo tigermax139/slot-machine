@@ -10,17 +10,17 @@ import BalanceIndicator from "../../components/BalanceIndicator";
 import ee, {eventTypes} from '../../config/emitter';
 import slotConfig from "../../config/slot.config";
 import gameConfig from "../../config/game.config";
-import { GameError, errorCodes } from "../../config/errors";
+import {GameError, errorCodes} from "../../config/errors";
 
 import './App.scss';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.isLock = false;
         this.state = {
             gameId: 0,
             balance: 100, // initial balance
+            isLock: false
         };
         ee.enableLogging(); // TODO make dependent
     }
@@ -50,10 +50,14 @@ class App extends React.Component {
 
     getLineNameByIndex(index) {
         switch (index) {
-            case 0: return 'top';
-            case 1: return 'center';
-            case 2: return 'bottom';
-            default: throw new Error('Undefined line index ' + index);
+            case 0:
+                return 'top';
+            case 1:
+                return 'center';
+            case 2:
+                return 'bottom';
+            default:
+                throw new Error('Undefined line index ' + index);
         }
     }
 
@@ -100,17 +104,18 @@ class App extends React.Component {
         return {
             singeSlotMatches,
             groupMatches,
-            pay
+            pay,
+            combination
         }
     }
 
     initGame() {
-        if (this.isLock) {
+        if (this.state.isLock) {
             console.warn('Game already started');
             return false;
         }
 
-        this.isLock = true;
+        this.setState({isLock: true});
 
         try {
             const gameId = this.state.gameId + 1;
@@ -127,8 +132,10 @@ class App extends React.Component {
 
             ee.emit(eventTypes.gameStart, {gameId});
 
-            const combination  = this.calculateResultCombination();
+            const combination = this.calculateResultCombination();
             const result = this.calculatePay(combination);
+
+            ee.emit(eventTypes.result, result);
 
             // TODO remove console.log
             console.table(combination);
@@ -142,16 +149,17 @@ class App extends React.Component {
 
             if (isWin) {
                 ee.emit(eventTypes.win, result);
+            } else {
+                ee.emit(eventTypes.loose, result);
             }
-
-            ee.emit(eventTypes.gameEnd, {gameId});
         } catch (e) {
             if (e instanceof GameError) {
                 this.onGameError(e);
             }
             throw e;
         } finally {
-            this.isLock = false;
+            this.setState({isLock: false});
+            ee.emit(eventTypes.gameEnd, {gameId: this.state.gameId});
         }
     }
 
@@ -173,10 +181,11 @@ class App extends React.Component {
                             <BalanceIndicator balance={this.state.balance}/>
                         </div>
                         <div className="uk-flex uk-flex-center">
-                            <ReelsContainer/>
+                            <ReelsContainer />
                         </div>
                         <div className="uk-flex uk-flex-center">
-                            <Button value="Spin!" round={true} onClick={this.onSpinClick.bind(this)}/>
+                            <Button value="Spin!" round={true} onClick={this.onSpinClick.bind(this)}
+                                    isDisabled={this.state.isLock}/>
                         </div>
                     </div>
                     <div>

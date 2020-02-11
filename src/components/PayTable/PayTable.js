@@ -18,16 +18,20 @@ const PayTable = () => (
             </tr>
             </thead>
             <tbody>
-            {Object.entries(slotConfig.payTable.single).map( ([combinationKey, combinationData]) => (
-                <tr>
+            {Object.entries(slotConfig.payTable.single).map(([combinationKey, combinationData]) => (
+                <tr key={combinationKey}>
                     <td className="uk-table-middle pay-table-combination">
-                        {combinationKey.split(' ').map(slotName => <img className="combination-image" src={slotConfig.symbolsList[slotName].img} alt={slotName} />)}
+                        {combinationKey.split(' ').map((slotName, i) =>
+                            <img className="combination-image"
+                                 src={slotConfig.symbolsList[slotName].img}
+                                 key={combinationKey + slotName + i}
+                                 alt={slotName}/>)}
                     </td>
                     <td className="uk-table-middle">
                         <ul className="uk-list uk-list-bullet">
-                            <li>Top: { combinationData.top }</li>
-                            <li>Center: { combinationData.center }</li>
-                            <li>Bottom: { combinationData.bottom }</li>
+                            <li>Top: {combinationData.top}</li>
+                            <li>Center: {combinationData.center}</li>
+                            <li>Bottom: {combinationData.bottom}</li>
                         </ul>
                     </td>
                 </tr>
