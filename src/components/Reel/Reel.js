@@ -8,14 +8,18 @@ import slotConfig from '../../config/slots.config';
 
 class Reel extends Component {
     render() {
+        const slots = slotConfig.symbolsOrder;
         return (
-            <div className="uk-card reel">
-                {
-                    slotConfig.symbolsOrder.map(symbolName => (
-                        <ReelSymbol config={slotConfig.symbolsList[symbolName]} key={symbolName}/>
-                        )
-                    )
-                }
+            <div className="uk-position-relative reel">
+                <div className="reel-visible" data-slot-count={slots.length}>
+                    {
+                        slots
+                            .map(symbolName => (
+                                    <ReelSymbol config={slotConfig.symbolsList[symbolName]} key={symbolName}/>
+                                )
+                            )
+                    }
+                </div>
             </div>
         );
     }

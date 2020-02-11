@@ -1,9 +1,16 @@
 $reel-symbol-height: 121px;
+$reel-symbol-length: 5;
+
+$reel-offset: (-1 * $reel-symbol-height * ($reel-symbol-length - 2));
 
 .reel {
   position: relative;
   height: $reel-symbol-height * 2;
   overflow-y: hidden;
+
+  .reel-visible {
+    transform: translateY($reel-offset);
+  }
 
   .reel-symbol {
     height: $reel-symbol-height;
@@ -12,6 +19,45 @@ $reel-symbol-height: 121px;
       width: 100%;
       height: auto;
     }
+  }
+}
+
+.reel-spinning {
+  animation-name: reel-spin;
+  animation-duration: 2s;
+  animation-direction: alternate;
+}
+
+@keyframes reel-spin {
+  10% {
+    transform: translateY($reel-offset / 10);
+  }
+  20% {
+    transform: translateY($reel-offset / 20);
+  }
+  30% {
+    transform: translateY($reel-offset / 30);
+  }
+  40% {
+    transform: translateY($reel-offset / 40);
+  }
+  50% {
+    transform: translateY($reel-offset / 50);
+  }
+  60% {
+    transform: translateY($reel-offset - $reel-offset / 60);
+  }
+  70% {
+    transform: translateY($reel-offset - $reel-offset / 70);
+  }
+  80% {
+    transform: translateY($reel-offset - $reel-offset / 80);
+  }
+  90% {
+    transform: translateY($reel-offset - $reel-offset / 90);
+  }
+  100% {
+    transform: translateY($reel-offset - $reel-offset / 100);
   }
 }
 
