@@ -2,7 +2,7 @@ $reel-symbol-height: 121px;
 $reel-symbol-length: 5;
 $win-reel-color: #f0506e;
 
-$reel-offset: (-1 * $reel-symbol-height * ($reel-symbol-length - 2));
+$reel-offset: (-1 * ($reel-symbol-height * ($reel-symbol-length - 2) - $reel-symbol-height / 2));
 
 .reel {
   position: relative;
