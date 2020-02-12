@@ -46,6 +46,11 @@ export const eventTypes = {
     win: 'GAME:WIN',
     loose: 'GAME:LOOSE',
     result: 'GAME:RESULT',
+    setFixedMode: 'GAME:MODE:FIXED',
+    setRandomMode: 'GAME:MODE:RANDOM',
+
+    requestFixedValues: 'REQUEST:FIXED_VALUES',
+    responseFixedValues: 'RESPONSE:FIXED_VALUES'
 };
 
 export default ee;

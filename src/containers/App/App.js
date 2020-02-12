@@ -21,8 +21,20 @@ class App extends React.Component {
             gameId: 0,
             balance: 100, // initial balance
             isLock: false,
+            gameMode: 'random'
         };
         ee.enableLogging(); // TODO make dependent
+
+        ee.on(eventTypes.setRandomMode, () => {
+            this.setState({
+                gameMode: 'random',
+            })
+        });
+        ee.on(eventTypes.setFixedMode, () => {
+            this.setState({
+                gameMode: 'fixed',
+            })
+        });
     }
 
     calculateResultCombination() {
@@ -140,7 +152,12 @@ class App extends React.Component {
                 balance: state.balance - gameConfig.spinCost
             }));
 
-            const combination = this.calculateResultCombination();
+            const combination = this.state.gameMode === 'random'
+                ? this.calculateResultCombination()
+                : await new Promise(resolve => {
+                    ee.once(eventTypes.responseFixedValues, resolve);
+                    ee.emit(eventTypes.requestFixedValues);
+                });
             const result = this.calculatePay(combination);
 
             // TODO remove console.log
@@ -184,7 +201,6 @@ class App extends React.Component {
     render() {
         return (
             <div className="App">
-
                 <div className="uk-grid uk-grid-medium">
                     <div className="uk-width-1-1@s">
                         <div className="uk-flex uk-flex-center">
@@ -194,15 +210,18 @@ class App extends React.Component {
                             <ReelsContainer />
                         </div>
                         <div className="uk-flex uk-flex-center">
-                            <Button value="Spin!" round={true} onClick={this.onSpinClick.bind(this)}
-                                    isDisabled={this.state.isLock}/>
+                            <Button value="Spin!"
+                                    round={true}
+                                    onClick={this.onSpinClick.bind(this)}
+                                    isDisabled={this.state.isLock}
+                            />
                         </div>
                     </div>
                     <div>
                         <PayTable/>
                     </div>
                     <div>
-                        <DebugArea gameId={this.state.gameId}/>
+                        <DebugArea />
                     </div>
                 </div>
 

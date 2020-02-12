@@ -1,6 +1,6 @@
 import React from 'react';
 // import cn from 'classnames';
-// import _ from 'lodash';
+import _ from 'lodash';
 
 import Switch from "../Switch";
 
@@ -15,9 +15,9 @@ class DebugArea extends React.Component {
             gameId: 0,
             isDebug: false,
             fixedResult: [
-                [],
-                [],
-                []
+                _.take(slotConfig.symbolsOrder, 3),
+                _.take(slotConfig.symbolsOrder, 3),
+                _.take(slotConfig.symbolsOrder, 3)
             ]
         };
 
@@ -55,7 +55,7 @@ class DebugArea extends React.Component {
     }
 
     onRequestFixedValues() {
-        ee.emit(eventTypes.requestFixedValues, this.state.fixedResult);
+        ee.emit(eventTypes.responseFixedValues, this.state.fixedResult);
     }
 
     onModeInputChange() {
