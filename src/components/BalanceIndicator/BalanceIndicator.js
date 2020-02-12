@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 class BalanceIndicator extends Component {
     render() {
         return (
-            <div className="uk-card">
-                <p className="uk-text-bold">
+            <div className="uk-card uk-card-default uk-card-body">
+                <h3 className="uk-text-center">
                     Your balance: { this.props.balance }
-                </p>
+                </h3>
             </div>
         );
     }

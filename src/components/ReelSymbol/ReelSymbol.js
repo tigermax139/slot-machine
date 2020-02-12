@@ -12,6 +12,7 @@ class ReelSymbol extends Component {
         return (
             <div className={cn({
                 "uk-card": true,
+                "uk-text-center": true,
                 "reel-symbol": true,
                 "blink--win": this.props.isWin,
             })}>

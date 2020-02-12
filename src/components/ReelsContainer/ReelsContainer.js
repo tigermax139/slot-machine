@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import Reel from '../Reel';
 
@@ -99,7 +99,7 @@ class ReelsContainer extends Component {
         });
     }
 
-    onWin({ winLines }) {
+    onWin({winLines}) {
         this.setState({
             winSlots: this.convertLinesToWinSlots(winLines),
         });
@@ -111,31 +111,40 @@ class ReelsContainer extends Component {
 
     render() {
         return (
-            <div className="uk-grid uk-grid-collapse reels-container">
-                <div>
-                    <div className="uk-flex-column uk-flex uk-flex-between uk-height-1-1 uk-padding-small">
-                        <span>Top line: </span>
-                        <span>Center line: </span>
-                        <span>Bottom line: </span>
-                    </div>
-                </div>
-                <div className="reel-1">
+            <div className="uk-card uk-card-default uk-card-body uk-grid uk-grid-collapse reels-container">
+                {/*<div>*/}
+                {/*    <div className="uk-flex-column uk-flex uk-flex-between uk-height-1-1 uk-padding-small">*/}
+                {/*        <span>Top line: </span>*/}
+                {/*        <span>Center line: </span>*/}
+                {/*        <span>Bottom line: </span>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+                <div className="reel-1 uk-width-1-3">
                     <Reel onSpinEnd={this.onAnimationEnd} reelKey="left" winSlots={this.state.winSlots[0]}
                           slots={this.state.leftReel}/>
                 </div>
-                <div className="reel-2">
+                <div className="reel-2  uk-width-1-3">
                     <Reel onSpinEnd={this.onAnimationEnd} reelKey="center" winSlots={this.state.winSlots[1]}
                           slots={this.state.centerReel}/>
                 </div>
-                <div className="reel-3">
+                <div className="reel-3  uk-width-1-3">
                     <Reel onSpinEnd={this.onAnimationEnd} reelKey="right" winSlots={this.state.winSlots[2]}
                           slots={this.state.rightReel}/>
+                </div>
+                <div className="uk-width-1-1 uk-align-self-center">
+                    {this.props.children}
                 </div>
             </div>
         );
     }
 }
 
-ReelsContainer.propTypes = {};
+ReelsContainer.propTypes = {
+    children: PropTypes.node
+};
+
+ReelsContainer.defaultProps = {
+    children: null
+};
 
 export default ReelsContainer;

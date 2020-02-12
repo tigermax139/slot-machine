@@ -202,26 +202,29 @@ class App extends React.Component {
         return (
             <div className="App">
                 <div className="uk-grid uk-grid-medium">
-                    <div className="uk-width-1-1@s">
-                        <div className="uk-flex uk-flex-center">
-                            <BalanceIndicator balance={this.state.balance}/>
-                        </div>
-                        <div className="uk-flex uk-flex-center">
-                            <ReelsContainer />
-                        </div>
-                        <div className="uk-flex uk-flex-center">
-                            <Button value="Spin!"
-                                    round={true}
-                                    onClick={this.onSpinClick.bind(this)}
-                                    isDisabled={this.state.isLock}
-                            />
+                    <div className="uk-width-1-1 game-container">
+                        <div className="uk-flex uk-flex-center uk-flex-column">
+                            <div className="uk-width-1-1">
+                                <BalanceIndicator balance={this.state.balance}/>
+                            </div>
+                            <div className="uk-width-1-1">
+                                <ReelsContainer>
+                                    <div className="uk-flex uk-flex-center">
+                                        <Button value="Spin!"
+                                                round={true}
+                                                onClick={this.onSpinClick.bind(this)}
+                                                isDisabled={this.state.isLock}
+                                        />
+                                    </div>
+                                </ReelsContainer>
+                            </div>
                         </div>
                     </div>
-                    <div>
+                    <div className="uk-width-1-2@m uk-width-1-1">
+                        <DebugArea/>
+                    </div>
+                    <div className="uk-width-1-2@m uk-width-1-1">
                         <PayTable/>
-                    </div>
-                    <div>
-                        <DebugArea />
                     </div>
                 </div>
 

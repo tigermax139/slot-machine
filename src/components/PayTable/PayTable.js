@@ -4,7 +4,7 @@ import slotConfig from "../../config/slot.config";
 import './PayTable.scss';
 
 const PayTable = () => (
-    <React.Fragment>
+    <div className="uk-card uk-card-default uk-card-body">
         <h2>Pay table</h2>
         <table className="uk-table uk-table-divider pay-table">
             <thead>
@@ -38,7 +38,7 @@ const PayTable = () => (
             ))}
             </tbody>
         </table>
-    </React.Fragment>
+    </div>
 );
 
 export default PayTable;
