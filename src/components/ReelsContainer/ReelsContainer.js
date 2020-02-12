@@ -27,20 +27,23 @@ class ReelsContainer extends Component {
             ],
         };
 
+        this.onAnimationEnd = this.onAnimationEnd.bind(this);
         this.onResult = this.onResult.bind(this);
         this.onGameStart = this.onGameStart.bind(this);
         this.onGameEnd = this.onGameEnd.bind(this);
-        this.onSpinEnd = this.onSpinEnd.bind(this);
+        this.onWin = this.onWin.bind(this);
 
         ee.on(eventTypes.result, this.onResult);
+        ee.on(eventTypes.win, this.onWin);
         ee.on(eventTypes.gameStart, this.onGameStart);
         ee.on(eventTypes.gameEnd, this.onGameEnd);
     }
 
     componentWillUnmount() {
         ee.off(eventTypes.result, this.onResult);
+        ee.off(eventTypes.win, this.onWin);
         ee.off(eventTypes.gameStart, this.onGameStart);
-        ee.off(eventTypes.gameEnd, this.onSpinEnd);
+        ee.off(eventTypes.gameEnd, this.onGameEnd);
     }
 
     getRandomSlots(limit = 1) {
@@ -68,18 +71,17 @@ class ReelsContainer extends Component {
         return [winSlots, winSlots, winSlots];
     }
 
-    onResult({ winLines, combination }) {
+    onResult({combination}) {
         const [leftReel, centerReel, rightReel] = this.convertCombinationToReels(combination);
 
         this.setState({
             leftReel,
             centerReel,
-            rightReel,
-            winSlots: this.convertLinesToWinSlots(winLines),
+            rightReel
         });
     }
 
-    onSpinEnd() {
+    onAnimationEnd() {
         this.finishedReels++;
         if (this.finishedReels >= gameConfig.reelsCount) {
             _.defer(() => ee.emit(eventTypes.spinEnd));
@@ -94,6 +96,12 @@ class ReelsContainer extends Component {
                 [false, false, false], // centerReel
                 [false, false, false] // rightReel
             ]
+        });
+    }
+
+    onWin({ winLines }) {
+        this.setState({
+            winSlots: this.convertLinesToWinSlots(winLines),
         });
     }
 
@@ -112,13 +120,16 @@ class ReelsContainer extends Component {
                     </div>
                 </div>
                 <div className="reel-1">
-                    <Reel onSpinEnd={() => this.onSpinEnd('left')} reelKey="left" winSlots={this.state.winSlots[0]} slots={this.state.leftReel}/>
+                    <Reel onSpinEnd={this.onAnimationEnd} reelKey="left" winSlots={this.state.winSlots[0]}
+                          slots={this.state.leftReel}/>
                 </div>
                 <div className="reel-2">
-                    <Reel onSpinEnd={() => this.onSpinEnd('center')} reelKey="center" winSlots={this.state.winSlots[1]} slots={this.state.centerReel}/>
+                    <Reel onSpinEnd={this.onAnimationEnd} reelKey="center" winSlots={this.state.winSlots[1]}
+                          slots={this.state.centerReel}/>
                 </div>
                 <div className="reel-3">
-                    <Reel onSpinEnd={() => this.onSpinEnd('right')} reelKey="right" winSlots={this.state.winSlots[2]} slots={this.state.rightReel}/>
+                    <Reel onSpinEnd={this.onAnimationEnd} reelKey="right" winSlots={this.state.winSlots[2]}
+                          slots={this.state.rightReel}/>
                 </div>
             </div>
         );
