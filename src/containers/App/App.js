@@ -20,7 +20,7 @@ class App extends React.Component {
         this.state = {
             gameId: 0,
             balance: 100, // initial balance
-            isLock: false
+            isLock: false,
         };
         ee.enableLogging(); // TODO make dependent
     }
@@ -65,6 +65,7 @@ class App extends React.Component {
         let pay = 0;
         const singeSlotMatches = [];
         const groupMatches = [];
+        const winLines = new Set();
 
         combination.forEach((lineSlots, index) => {
             const lineKey = lineSlots.join(' ');
@@ -81,6 +82,7 @@ class App extends React.Component {
                     groupMatch: false
                 });
                 pay += singleMatch[lineName];
+                winLines.add(lineName);
             }
 
             // Calculate group matches
@@ -97,6 +99,7 @@ class App extends React.Component {
                     groupMatch: true
                 });
                 pay += groupMatch[lineName];
+                winLines.add(lineName);
             }
 
         });
@@ -104,6 +107,7 @@ class App extends React.Component {
         return {
             singeSlotMatches,
             groupMatches,
+            winLines: winLines,
             pay,
             combination
         }
@@ -125,12 +129,12 @@ class App extends React.Component {
                 throw new GameError(errorCodes.lowBalance.code, 'Your balance is less than', gameConfig.spinCost)
             }
 
+            ee.emit(eventTypes.gameStart, {gameId});
+
             this.setState(state => ({
                 gameId,
                 balance: state.balance - gameConfig.spinCost
             }));
-
-            ee.emit(eventTypes.gameStart, {gameId});
 
             const combination = this.calculateResultCombination();
             const result = this.calculatePay(combination);
@@ -141,7 +145,7 @@ class App extends React.Component {
             console.table(combination);
             console.log(result);
 
-            const isWin = result > 0;
+            const isWin = result.pay > 0;
 
             this.setState(state => ({
                 balance: state.balance + result.pay

@@ -2,16 +2,15 @@ $reel-symbol-height: 121px;
 $reel-symbol-length: 5;
 $win-reel-color: #f0506e;
 
-$reel-offset: (-1 * ($reel-symbol-height * ($reel-symbol-length - 2) - $reel-symbol-height / 2));
+$reel-offset: $reel-symbol-height * 3;
 
 .reel {
   position: relative;
-  //height: $reel-symbol-height * 2 + $reel-symbol-height / 4;
   height: $reel-symbol-height * 3;
   overflow-y: hidden;
 
   .reel-visible {
-    transform: translateY($reel-offset);
+    transform: translateY(-1 * $reel-offset);
   }
 
   .reel-symbol {
@@ -64,6 +63,18 @@ $reel-offset: (-1 * ($reel-symbol-height * ($reel-symbol-length - 2) - $reel-sym
   }
   100% {
     transform: translateY($reel-offset - $reel-offset / 100);
+  }
+}
+
+@keyframes blink {
+  from {
+    background-color: initial;
+  }
+  50% {
+    background-color: $win-reel-color;
+  }
+  to {
+    background-color: initial;
   }
 }
 
