@@ -87,7 +87,6 @@ const slotConfig = {
                 center: 5,
                 bottom: 5
             },
-            // Combination of any BAR symbols on any line 5
         },
     }
 };

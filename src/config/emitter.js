@@ -42,6 +42,7 @@ const ee = new GameEmitter();
 export const eventTypes = {
     gameStart: 'GAME:START',
     gameEnd: 'GAME:END',
+    spinEnd: 'GAME:SPIN:END',
     win: 'GAME:WIN',
     loose: 'GAME:LOOSE',
     result: 'GAME:RESULT',

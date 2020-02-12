@@ -1,9 +1,4 @@
 .reel-symbol {
   &.reel-symbol--win {
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-iteration-count: infinite;
-    animation-fill-mode: backwards;
-    animation-timing-function: ease-in;
   }
 }

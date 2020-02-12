@@ -113,7 +113,7 @@ class App extends React.Component {
         }
     }
 
-    initGame() {
+    async initGame() {
         if (this.state.isLock) {
             console.warn('Game already started');
             return false;
@@ -131,6 +131,10 @@ class App extends React.Component {
 
             ee.emit(eventTypes.gameStart, {gameId});
 
+            const spinPromise = new Promise(resolve => {
+                ee.once(eventTypes.spinEnd, resolve);
+            });
+
             this.setState(state => ({
                 gameId,
                 balance: state.balance - gameConfig.spinCost
@@ -139,11 +143,13 @@ class App extends React.Component {
             const combination = this.calculateResultCombination();
             const result = this.calculatePay(combination);
 
-            ee.emit(eventTypes.result, result);
-
             // TODO remove console.log
             console.table(combination);
             console.log(result);
+
+            ee.emit(eventTypes.result, result);
+
+            await spinPromise; // End spinning
 
             const isWin = result.pay > 0;
 

@@ -5,6 +5,7 @@ import Reel from '../Reel';
 
 import _ from 'lodash';
 import slotConfig from '../../config/slot.config';
+import gameConfig from '../../config/game.config';
 import ee, {eventTypes} from "../../config/emitter";
 
 import './ReelsContainer.scss';
@@ -12,6 +13,8 @@ import './ReelsContainer.scss';
 class ReelsContainer extends Component {
     constructor(props) {
         super(props);
+
+        this.finishedReels = 0;
 
         this.state = {
             leftReel: this.getRandomSlots(3),
@@ -26,14 +29,18 @@ class ReelsContainer extends Component {
 
         this.onResult = this.onResult.bind(this);
         this.onGameStart = this.onGameStart.bind(this);
+        this.onGameEnd = this.onGameEnd.bind(this);
+        this.onSpinEnd = this.onSpinEnd.bind(this);
 
         ee.on(eventTypes.result, this.onResult);
         ee.on(eventTypes.gameStart, this.onGameStart);
+        ee.on(eventTypes.gameEnd, this.onGameEnd);
     }
 
     componentWillUnmount() {
         ee.off(eventTypes.result, this.onResult);
         ee.off(eventTypes.gameStart, this.onGameStart);
+        ee.off(eventTypes.gameEnd, this.onSpinEnd);
     }
 
     getRandomSlots(limit = 1) {
@@ -53,42 +60,45 @@ class ReelsContainer extends Component {
     }
 
     convertLinesToWinSlots(winLines) {
-        const winSlots =[
+        const winSlots = [
             winLines.has('top'),
             winLines.has('center'),
             winLines.has('bottom'),
         ];
-        const result = [
-            _.fill(this.state.winSlots[0], false).concat(winSlots),
-            _.fill(this.state.winSlots[1], false).concat(winSlots),
-            _.fill(this.state.winSlots[2], false).concat(winSlots),
-        ];
-        return result;
+        return [winSlots, winSlots, winSlots];
     }
 
     onResult({ winLines, combination }) {
         const [leftReel, centerReel, rightReel] = this.convertCombinationToReels(combination);
 
-        this.setState(state => ({
-            leftReel: state.leftReel.concat(leftReel),
-            centerReel: state.centerReel.concat(centerReel),
-            rightReel: state.rightReel.concat(rightReel),
+        this.setState({
+            leftReel,
+            centerReel,
+            rightReel,
             winSlots: this.convertLinesToWinSlots(winLines),
-        }));
+        });
+    }
+
+    onSpinEnd() {
+        this.finishedReels++;
+        if (this.finishedReels >= gameConfig.reelsCount) {
+            _.defer(() => ee.emit(eventTypes.spinEnd));
+        }
     }
 
     onGameStart() {
-        // Remove redundant slots
-        this.setState(({leftReel, centerReel, rightReel}) => ({
-            leftReel: _.takeRight(leftReel, 3),
-            centerReel: _.takeRight(centerReel, 3),
-            rightReel: _.takeRight(rightReel, 3),
+        // Clear win slots
+        this.setState({
             winSlots: [
                 [false, false, false], // leftReel
                 [false, false, false], // centerReel
                 [false, false, false] // rightReel
             ]
-        }));
+        });
+    }
+
+    onGameEnd() {
+        this.finishedReels = 0;
     }
 
     render() {
@@ -101,14 +111,14 @@ class ReelsContainer extends Component {
                         <span>Bottom line: </span>
                     </div>
                 </div>
-                <div>
-                    <Reel reelKey="left" winSlots={this.state.winSlots[0]} slots={this.state.leftReel}/>
+                <div className="reel-1">
+                    <Reel onSpinEnd={() => this.onSpinEnd('left')} reelKey="left" winSlots={this.state.winSlots[0]} slots={this.state.leftReel}/>
                 </div>
-                <div>
-                    <Reel reelKey="center" winSlots={this.state.winSlots[1]} slots={this.state.centerReel}/>
+                <div className="reel-2">
+                    <Reel onSpinEnd={() => this.onSpinEnd('center')} reelKey="center" winSlots={this.state.winSlots[1]} slots={this.state.centerReel}/>
                 </div>
-                <div>
-                    <Reel reelKey="right" winSlots={this.state.winSlots[2]} slots={this.state.rightReel}/>
+                <div className="reel-3">
+                    <Reel onSpinEnd={() => this.onSpinEnd('right')} reelKey="right" winSlots={this.state.winSlots[2]} slots={this.state.rightReel}/>
                 </div>
             </div>
         );
