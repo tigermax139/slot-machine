@@ -12,7 +12,7 @@ Audio.prototype.reset = function () {
 class AudioContainer extends React.Component {
     constructor(props) {
         super(props);
-        this.audio = new Audio(props);
+        this.audio = new Audio(props.src);
 
         this.onStart = this.onStart.bind(this);
         this.onReset = this.onReset.bind(this);
@@ -35,14 +35,14 @@ class AudioContainer extends React.Component {
     }
 
     render() {
-        return super.render();
+        return null;
     }
 }
 
 AudioContainer.propTypes = {
     src: PropTypes.string.isRequired,
-    playOn: PropTypes.oneOf(Object.keys(eventTypes)).isRequired,
-    resetOn: PropTypes.oneOf(Object.keys(eventTypes)).isRequired
+    playOn: PropTypes.oneOf(Object.values(eventTypes)).isRequired,
+    resetOn: PropTypes.oneOf(Object.values(eventTypes)).isRequired
 };
 
 export default AudioContainer;
