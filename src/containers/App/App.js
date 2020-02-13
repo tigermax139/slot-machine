@@ -190,7 +190,12 @@ class App extends React.Component {
         }
     }
 
+    onBalanceInputChange({ target }) {
+        this.setState({ balance: target.value });
+    }
+
     onGameError(e) {
+        alert(e.message);
         console.warn(e);
     }
 
@@ -205,7 +210,7 @@ class App extends React.Component {
                     <div className="uk-width-1-1 game-container">
                         <div className="uk-flex uk-flex-center uk-flex-column">
                             <div className="uk-width-1-1">
-                                <BalanceIndicator balance={this.state.balance}/>
+                                <BalanceIndicator balance={this.state.balance} onBalanceChange={this.onBalanceInputChange.bind(this)}/>
                             </div>
                             <div className="uk-width-1-1">
                                 <ReelsContainer>
