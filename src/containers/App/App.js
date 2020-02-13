@@ -75,7 +75,7 @@ class App extends React.Component {
 
     calculatePay(combination) {
         let pay = 0;
-        const singeSlotMatches = [];
+        const singleSlotMatches = [];
         const groupMatches = [];
         const winLines = new Set();
 
@@ -86,7 +86,7 @@ class App extends React.Component {
             // Calculate matcher by single slots
             const singleMatch = slotConfig.payTable.single[lineKey];
             if (singleMatch !== undefined) {
-                singeSlotMatches.push({
+                singleSlotMatches.push({
                     line: lineName,
                     value: singleMatch[lineName],
                     combinationKey: lineKey,
@@ -117,7 +117,7 @@ class App extends React.Component {
         });
 
         return {
-            singeSlotMatches,
+            singleSlotMatches,
             groupMatches,
             winLines: winLines,
             pay,

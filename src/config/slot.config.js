@@ -36,46 +36,55 @@ const slotConfig = {
     payTable: {
         single: {
             'CHERRY CHERRY CHERRY': {
+                isSingle: true,
                 top: 2000,
                 center: 1000,
                 bottom: 4000
             },
             '7 7 7': {
+                isSingle: true,
                 top: 150,
                 center: 150,
                 bottom: 150
             },
             'CHERRY CHERRY 7': {
+                isSingle: true,
                 top: 75,
                 center: 75,
                 bottom: 75
             },
             'CHERRY 7 7': {
+                isSingle: true,
                 top: 75,
                 center: 75,
                 bottom: 75
             },
             '7 7 CHERRY': {
+                isSingle: true,
                 top: 75,
                 center: 75,
                 bottom: 75
             },
             '7 CHERRY CHERRY': {
+                isSingle: true,
                 top: 75,
                 center: 75,
                 bottom: 75
             },
             '3xBAR 3xBAR 3xBAR': {
+                isSingle: true,
                 top: 50,
                 center: 50,
                 bottom: 50
             },
             '2xBAR 2xBAR 2xBAR': {
+                isSingle: true,
                 top: 20,
                 center: 20,
                 bottom: 20
             },
             'BAR BAR BAR': {
+                isSingle: true,
                 top: 10,
                 center: 10,
                 bottom: 10
@@ -83,6 +92,7 @@ const slotConfig = {
         },
         groups: {
             'BAR BAR BAR': {
+                isSingle: false,
                 top: 5,
                 center: 5,
                 bottom: 5

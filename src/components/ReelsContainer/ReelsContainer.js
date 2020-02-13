@@ -112,13 +112,6 @@ class ReelsContainer extends Component {
     render() {
         return (
             <div className="uk-card uk-card-default uk-card-body uk-grid uk-grid-collapse reels-container">
-                {/*<div>*/}
-                {/*    <div className="uk-flex-column uk-flex uk-flex-between uk-height-1-1 uk-padding-small">*/}
-                {/*        <span>Top line: </span>*/}
-                {/*        <span>Center line: </span>*/}
-                {/*        <span>Bottom line: </span>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
                 <div className="reel-1 uk-width-1-3">
                     <Reel onSpinEnd={this.onAnimationEnd} reelKey="left" winSlots={this.state.winSlots[0]}
                           slots={this.state.leftReel}/>
