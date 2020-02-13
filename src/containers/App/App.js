@@ -209,6 +209,7 @@ class App extends React.Component {
             <div className="App">
                 <AudioContainer src="spin.mp3" playOn={eventTypes.gameStart} resetOn={eventTypes.spinEnd} />
                 <AudioContainer src="win.mp3" playOn={eventTypes.win} resetOn={eventTypes.gameStart} />
+                <AudioContainer src="loose.mp3" playOn={eventTypes.loose} resetOn={eventTypes.gameStart} />
                 <div className="uk-grid uk-grid-medium">
                     <div className="uk-width-1-1 game-container">
                         <div className="uk-flex uk-flex-center uk-flex-column">
